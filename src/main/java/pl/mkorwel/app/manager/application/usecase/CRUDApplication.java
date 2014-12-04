@@ -54,7 +54,12 @@ public class CRUDApplication {
 
 	public Result<Void> update(ApplicationUpdateModel param) {
 
-		Application application = repository.findOne(param.getId());
+		Application application;
+		try {
+			application = repository.findOne(param.getId());
+		} catch (NullPointerException e){
+			return new Result<Void>(ApplicationErrorCode.APPLICATION_NOT_FOUND);
+		}
 		List<ErrorCode> errors = validateBeforeUpdate(param, application);
 		if (!errors.isEmpty()) {
 			return new Result<Void>(errors);
@@ -91,13 +96,22 @@ public class CRUDApplication {
 		return errors;
 	}
 
-	public ApplicationReadModel read(Long id) {
-		return new ApplicationReadModel(repository.findOne(id));
+	public Result<ApplicationReadModel> read(Long id) {
+		try {
+			return new Result<ApplicationReadModel>(new ApplicationReadModel(repository.findOne(id)));
+		} catch (NullPointerException e){
+			return new Result<ApplicationReadModel>(ApplicationErrorCode.APPLICATION_NOT_FOUND);
+		}
 	}
 
 	public Result<Void> delete(DeleteApplicationModel params) {
 
-		Application application = repository.findOne(params.getId());
+		Application application;
+		try {
+			application = repository.findOne(params.getId());
+		} catch (NullPointerException e){
+			return new Result<Void>(ApplicationErrorCode.APPLICATION_NOT_FOUND);
+		}
 		ApplicationHistory history = new ApplicationHistory(application);
 		try {
 			application.delete(params.getReason());

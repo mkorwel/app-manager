@@ -93,7 +93,11 @@ public class ApplicationsRest {
 	@ResponseBody
 	public ApplicationReadModel get(@PathVariable Long id) {
 
-		return createApplication.read(id);
+		Result<ApplicationReadModel> result = createApplication.read(id);
+		if (result.isError()) {
+			throw new ApplicationException(result.getErrors());
+		}
+		return result.getResult();
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")

@@ -4,5 +4,5 @@ import pl.mkorwel.app.manager.base.usecase.model.response.ErrorCode;
 
 public enum ApplicationErrorCode implements ErrorCode {
 	
-	WRONG_STATE, NAME_IS_REQUIRED, REASON_IS_REQUIRED, CONTENT_IS_REQUIRED;
+	WRONG_STATE, NAME_IS_REQUIRED, REASON_IS_REQUIRED, CONTENT_IS_REQUIRED, APPLICATION_NOT_FOUND;
 }

@@ -10,6 +10,7 @@ import org.junit.Test;
 import pl.mkorwel.app.manager.application.domain.Application;
 import pl.mkorwel.app.manager.application.domain.ApplicationState;
 import pl.mkorwel.app.manager.application.domain.error.ApplicationErrorCode;
+import pl.mkorwel.app.manager.application.repository.ApplicationHistoryRepository;
 import pl.mkorwel.app.manager.application.repository.ApplicationRepository;
 import pl.mkorwel.app.manager.base.usecase.model.response.Result;
 
@@ -21,8 +22,9 @@ public class VerifyApplicationUserCaseTest {
 		Application application = new Application("testName", "testContent") {{	state = ApplicationState.CREATED; }};
 		ApplicationRepository repository = mock(ApplicationRepository.class);
 		when(repository.findOne(anyLong())).thenReturn(application);
+		ApplicationHistoryRepository historyRepository = mock(ApplicationHistoryRepository.class);
 		
-		Result<Void> result = new VerifyApplication(repository).execute(1L);
+		Result<Void> result = new VerifyApplication(repository, historyRepository).execute(1L);
 
 		assertThat(application.getState()).isEqualTo(ApplicationState.VERIFIED);
 		assertThat(result).isEqualTo(Result.EMPTY_RESULT);
@@ -33,8 +35,9 @@ public class VerifyApplicationUserCaseTest {
 		Application application = new Application("testName", "testContent") {{	state = ApplicationState.DELETED; }};
 		ApplicationRepository repository = mock(ApplicationRepository.class);
 		when(repository.findOne(anyLong())).thenReturn(application);
+		ApplicationHistoryRepository historyRepository = mock(ApplicationHistoryRepository.class);
 		
-		Result<Void> result = new VerifyApplication(repository).execute(1L);
+		Result<Void> result = new VerifyApplication(repository, historyRepository).execute(1L);
 		
 		assertThat(application.getState()).isEqualTo(ApplicationState.DELETED);
 		assertThat(result.isError()).isEqualTo(true);
