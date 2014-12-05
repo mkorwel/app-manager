@@ -64,7 +64,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>pl.mkorwel.app.manager.Application</start-class>
+		<start-class>pl.mkorwel.app.manager.AppStart</start-class>
 		<java.version>1.8</java.version>
 	</properties>
 
